@@ -1,33 +1,37 @@
-import { useState } from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
-import "./App.css";
+import App from "./App";
 
 // page components
 
 import Home from "./pages/Home";
 import About from "./pages/About";
 
-// the App
+// router creation
 
-function App() {
-  const [currentLocation, setCurrentLocation] = useState("/");
+const router = createBrowserRouter([
+  {
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+    ],
+  },
+]);
 
-  return (
-    <>
-      <nav>
-        <button onClick={() => setCurrentLocation("/")} type="button">
-          Home
-        </button>
-        <button onClick={() => setCurrentLocation("/about")} type="button">
-          About
-        </button>
-      </nav>
-      <main>
-        {currentLocation === "/" && <Home />}
-        {currentLocation === "/about" && <About />}
-      </main>
-    </>
+// rendering
+
+const rootElement = document.getElementById("root");
+
+if (rootElement != null) {
+  ReactDOM.createRoot(rootElement).render(
+    <RouterProvider router={router} />
   );
 }
-
-export default App;
